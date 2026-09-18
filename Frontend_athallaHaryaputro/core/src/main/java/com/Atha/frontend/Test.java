@@ -1,5 +1,8 @@
 package com.Atha.frontend;
 
+import com.Atha.frontend.objects.enemies.Enemy;
+import objects.Player;
+
 public class Test {
     public static void main(String[] args) {
         System.out.println("=== TOUHOU OOP PRACTICUM - MODULE 1: BASIC CLASSES & OBJECT INTERACTION ===");

@@ -7,10 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
+
+    powerItem = new Item(200, 450, 16, 16, 80f, ItemType.POWER, 500L);
+    pointItem = new Item(320, 480, 12, 12, 120f, ItemType.POINT, 1000L);
+
+
 
     @Override
     public void create() {
@@ -32,3 +36,13 @@ public class Main extends ApplicationAdapter {
         image.dispose();
     }
 }
+// AABB Collision detection between every unique entity pair
+for (int i = 0; i < entities.size(); i++) {
+    for (int j = i + 1; j < entities.size(); j++) {
+GameObject a = entities.get(i);
+GameObject b = entities.get(j);
+
+// TODO: Check whether getCoreHitbox() of a and b overlap (use the .overlaps() method of Rectangle)
+// TODO: Call a.onCollision(b) and b.onCollision(a)
+    }
+        }

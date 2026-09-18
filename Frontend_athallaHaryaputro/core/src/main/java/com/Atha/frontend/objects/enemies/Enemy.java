@@ -1,6 +1,8 @@
-package com.Atha.frontend;
+package com.Atha.frontend.objects.enemies;
 
 import com.badlogic.gdx.graphics.Color;
+import com.Atha.frontend.objects.GameObject;
+import com.Atha.frontend.objects.Player;
 
 public class Enemy extends GameObject {
     protected String name;
