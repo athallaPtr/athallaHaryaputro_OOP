@@ -22,11 +22,14 @@ public abstract class GameObject implements Collidable {
     }
 
     public void update(float delta) {
+        // Base update method
     }
 
     public void render(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(this.color);
-        shapeRenderer.rect(this.x, this.y, this.width, this.height);
+        if (shapeRenderer != null && color != null) {
+            shapeRenderer.setColor(color);
+            shapeRenderer.rect(x, y, width, height);
+        }
     }
 
     @Override
@@ -36,19 +39,21 @@ public abstract class GameObject implements Collidable {
 
     @Override
     public Rectangle getGrazeHitbox() {
+        // Graze hitbox is slightly larger than core hitbox (+10px padding)
         return new Rectangle(x - 10, y - 10, width + 20, height + 20);
     }
 
     @Override
     public void onCollision(Collidable other) {
-        // Leave empty for base class
+        // Base collision handler (can be overridden by subclasses)
     }
 
-    public float getX(){return x; }
-    public void setX(float x) {this.x = x;}
+    // Encapsulation: Getters and Setters
+    public float getX() { return x; }
+    public void setX(float x) { this.x = x; }
 
-    public float getY(){return y; }
-    public void setY(float y) {this.y = y;}
+    public float getY() { return y; }
+    public void setY(float y) { this.y = y; }
 
     public float getWidth() { return width; }
     public void setWidth(float width) {
@@ -59,12 +64,12 @@ public abstract class GameObject implements Collidable {
     public void setHeight(float height) {
         if (height > 0) this.height = height;
     }
+
     public float getSpeed() { return speed; }
     public void setSpeed(float speed) {
         if (speed >= 0) this.speed = speed;
     }
 
-    public Color getColor() {return color; }
+    public Color getColor() { return color; }
     public void setColor(Color color) { this.color = color; }
-
 }

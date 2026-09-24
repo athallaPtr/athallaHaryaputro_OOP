@@ -12,19 +12,11 @@ public class Fairy extends Enemy {
     public Fairy(float x, float y, String name, int hp) {
         super(x, y, 24, 24, Color.PINK, name, hp, 500L);
     }
-}
 
-@Override
-public void update(float delta) {
-    this.x += speed * delta;
-    if (this.x > 600 || this.x < 0) {
-        this.speed = -this.speed;
-    }
-}
-
-@Override
-public void onCollision(Collidable other) {
-    if (other instanceof Player) {
-        System.out.println("Player touches fairy");
+    @Override
+    public void onCollision(Collidable other) {
+        if (other instanceof Player) {
+            System.out.println("Player touches fairy");
+        }
     }
 }

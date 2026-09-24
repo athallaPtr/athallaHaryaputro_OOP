@@ -1,8 +1,10 @@
 package com.Atha.frontend.objects.enemies;
 
 import com.badlogic.gdx.graphics.Color;
+import com.Atha.frontend.objects.Collidable;
 import com.Atha.frontend.objects.GameObject;
 import com.Atha.frontend.objects.Player;
+import com.Atha.frontend.objects.items.Item;
 
 public class Enemy extends GameObject {
     protected String name;
@@ -15,7 +17,7 @@ public class Enemy extends GameObject {
         this.name = name;
         this.hp = hp;
         this.maxHp = hp;
-        this.scoreValue = 100L;
+        this.scoreValue = 100;
     }
 
     public Enemy(float x, float y, float width, float height, Color color, String name, int hp, long scoreValue) {
@@ -27,14 +29,10 @@ public class Enemy extends GameObject {
     }
 
     public boolean takeDamage(int damage) {
-        if (getHp() <= 0) {
-            return false;
-        }
-
+        boolean wasAlive = isAlive();
         setHp(getHp() - damage);
         System.out.println(getName() + " took " + damage + " damage! HP: " + getHp() + "/" + getMaxHp());
-
-        if (getHp() == 0) {
+        if (wasAlive && getHp() == 0) {
             System.out.println(getName() + " was defeated!");
             return true;
         }
@@ -42,14 +40,15 @@ public class Enemy extends GameObject {
     }
 
     public void attack(Player player, int damage) {
-        System.out.println(getName() + " unleashes bullet barrage on " + player.getName() + "!");
+        System.out.println(name + " unleashes bullet barrage on " + player.getName() + "!");
         player.takeDamage(damage);
     }
 
     public boolean isAlive() {
-        return getHp() > 0;
+        return this.hp > 0;
     }
 
+    // Encapsulation getters and setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
