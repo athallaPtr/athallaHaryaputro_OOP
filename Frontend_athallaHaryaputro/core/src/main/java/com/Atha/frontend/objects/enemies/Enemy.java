@@ -34,6 +34,7 @@ public class Enemy extends GameObject {
         System.out.println(getName() + " took " + damage + " damage! HP: " + getHp() + "/" + getMaxHp());
         if (wasAlive && getHp() == 0) {
             System.out.println(getName() + " was defeated!");
+            destroy();
             return true;
         }
         return false;

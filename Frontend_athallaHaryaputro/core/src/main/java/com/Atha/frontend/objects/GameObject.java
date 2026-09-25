@@ -11,6 +11,7 @@ public abstract class GameObject implements Collidable {
     protected float height;
     protected float speed;
     protected Color color;
+    protected boolean active = true;
 
     public GameObject(float x, float y, float width, float height, float speed, Color color) {
         this.x = x;
@@ -26,10 +27,23 @@ public abstract class GameObject implements Collidable {
     }
 
     public void render(ShapeRenderer shapeRenderer) {
-        if (shapeRenderer != null && color != null) {
+        if (shapeRenderer != null && color != null && active) {
             shapeRenderer.setColor(color);
             shapeRenderer.rect(x, y, width, height);
         }
+    }
+
+    public boolean isDestroyed() {
+        return !active;
+    }
+
+    public void destroy() {
+        this.active = false;
+    }
+
+    public boolean isOffScreen(float screenWidth, float screenHeight) {
+        return x < -50 || x > screenWidth + 50
+            || y < -50 || y > screenHeight + 50;
     }
 
     @Override

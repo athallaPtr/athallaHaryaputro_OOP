@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.Atha.frontend.objects.items.Item;
 import com.Atha.frontend.objects.items.ItemType;
+import com.Atha.frontend.objects.bullets.Bullet;
 import com.Atha.frontend.objects.enemies.Boss;
 import com.Atha.frontend.objects.enemies.Enemy;
 import com.Atha.frontend.objects.enemies.Fairy;
@@ -75,7 +76,14 @@ public class Player extends GameObject {
         }
     }
 
+    public Bullet shootBullet() {
+        int damage = 10 + getPower();
+        System.out.println(getName() + " shoots bullet dealing " + damage + " DMG!");
+        return new Bullet(x + width / 2 - 4, y + height, BulletType.AMULET, damage);
+    }
+
     public void collectItem(Item item) {
+        if (item.isDestroyed()) return;
         ItemType type = item.getItemTypeEnum();
         if (type != null) {
             switch (type) {
@@ -103,6 +111,7 @@ public class Player extends GameObject {
             addScore(item.getScoreValue());
             System.out.println(name + " collected " + item.getItemType() + "!");
         }
+        item.destroy();
     }
 
     public void takeDamage(int damage) {

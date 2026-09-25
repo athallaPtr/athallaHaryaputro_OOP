@@ -10,9 +10,13 @@ import com.Atha.frontend.objects.enemies.Boss;
 import com.Atha.frontend.objects.enemies.Fairy;
 import com.Atha.frontend.objects.items.Item;
 import com.Atha.frontend.objects.items.ItemType;
+import com.badlogic.gdx.Input;
+import java.util.Iterator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class Main extends ApplicationAdapter {
     private ShapeRenderer shapeRenderer;
@@ -48,6 +52,14 @@ public class Main extends ApplicationAdapter {
         entities.add(powerItem);
         entities.add(pointItem);
     }
+
+    public <T extends GameObject> void updateAndClean(List<T> list, float delta, float screenWidth, float screenHeight) {
+        Iterator<T> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            
+        }
+    }
+
 
     @Override
     public void render() {
