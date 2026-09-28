@@ -36,7 +36,7 @@ public class Bullet extends GameObject {
         if (other instanceof Enemy enemy) {
             // 1. Display a message indicating that the Bullet hit the Enemy in the format:
             //    Bullet hit [EnemyName] for [damage] DMG!
-            System.out.println("Bullet Hit " + enemy.getName() + " for" + damage + "DMG! ");
+            System.out.println("Bullet hit " + enemy.getName() + " for " + damage + " DMG!");
             // 2. Call the Enemy's takeDamage() method with this Bullet's damage.
             enemy.takeDamage(damage);
             // 3. Destroy the bullet after hitting the Enemy, regardless of the result
@@ -46,4 +46,3 @@ public class Bullet extends GameObject {
         }
     }
 }
-

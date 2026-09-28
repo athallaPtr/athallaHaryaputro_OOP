@@ -56,7 +56,11 @@ public class Main extends ApplicationAdapter {
     public <T extends GameObject> void updateAndClean(List<T> list, float delta, float screenWidth, float screenHeight) {
         Iterator<T> iterator = list.iterator();
         while (iterator.hasNext()) {
-            
+            T entity = iterator.next();
+            entity.update(delta);
+            if (entity.isDestroyed() || entity.isOffScreen(screenWidth, screenHeight)) {
+                iterator.remove();
+            }
         }
     }
 
@@ -65,31 +69,41 @@ public class Main extends ApplicationAdapter {
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
 
-        // 1. Iterative updates on entities list
-        for (GameObject entity : entities) {
-            entity.update(delta);
+        // TODO 1: If the Z key was just pressed, add a new bullet from player.shootBullet()
+        // to the entities list.
+        // Clue: Gdx.input.isKeyJustPressed()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+            entities.add(player.shootBullet());
         }
 
-        // 2. AABB Collision detection between entities
+        // TODO 2: Call updateAndClean(entities, delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())
+        // to update and clean up destroyed/off-screen entities.
+        updateAndClean(entities, delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // 3. Collision detection between entities (skip entities that are already destroyed)
         for (int i = 0; i < entities.size(); i++) {
             for (int j = i + 1; j < entities.size(); j++) {
                 GameObject a = entities.get(i);
                 GameObject b = entities.get(j);
 
-                if (a.getCoreHitbox().overlaps(b.getCoreHitbox())) {
-                    a.onCollision(b);
-                    b.onCollision(a);
+                if (!a.isDestroyed() && !b.isDestroyed()) {
+                    if (a.getCoreHitbox().overlaps(b.getCoreHitbox())) {
+                        a.onCollision(b);
+                        b.onCollision(a);
+                    }
                 }
             }
         }
 
-        // 3. Clear screen
         ScreenUtils.clear(0.1f, 0.1f, 0.15f, 1f);
 
-        // 4. Render filled hitboxes with ShapeRenderer
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (GameObject entity : entities) {
-            entity.render(shapeRenderer);
+            // TODO 3: Use an if statement to check whether the entity has not been destroyed (!entity.isDestroyed()).
+            // If so, call entity.render(shapeRenderer);
+            if (!entity.isDestroyed()) {
+                entity.render(shapeRenderer);
+            }
         }
         shapeRenderer.end();
     }
