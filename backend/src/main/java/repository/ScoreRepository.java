@@ -16,6 +16,6 @@ public interface ScoreRepository extends JpaRepository<Score, UUID> {
 
     List<Score> findAllByOrderByCreatedAtDesc();
 
-    @Query("SELECT s FROM Score s ORDER BY s.point DESC")
+    @Query(value = "SELECT * FROM scores ORDER BY points DESC LIMIT :limit", nativeQuery = true)
     List<Score> findTopScores(@Param("limit") Integer limit);
 }
