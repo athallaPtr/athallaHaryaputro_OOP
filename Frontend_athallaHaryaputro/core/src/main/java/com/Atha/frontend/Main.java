@@ -2,7 +2,7 @@ package com.Atha.frontend;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.Atha.frontend.objects.GameObject;
 import com.Atha.frontend.objects.Player;
@@ -10,16 +10,16 @@ import com.Atha.frontend.objects.enemies.Boss;
 import com.Atha.frontend.objects.enemies.Fairy;
 import com.Atha.frontend.objects.items.Item;
 import com.Atha.frontend.objects.items.ItemType;
+import com.Atha.frontend.systems.AssetManager;
+import com.Atha.frontend.systems.EntityFactory;
 import com.badlogic.gdx.Input;
 import java.util.Iterator;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
+import com.Atha.frontend.systems.AssetManager;
 
 public class Main extends ApplicationAdapter {
-    private ShapeRenderer shapeRenderer;
+    private SpriteBatch batch;
 
     private Player player;
     private Fairy fairy;
@@ -30,21 +30,23 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
+        AssetManager.getInstance().init();
         entities = new ArrayList<>();
+        fairy = new ArrayList<>()
 
         // 1. Player: Red square (movable with W/A/S/D or Arrows)
-        player = new Player(280, 40, "Reimu Hakurei", 100, 15, 3);
+        player = EntityFactory.createPlayer(280, 40, "Reimu Hakurei", 100, 15, 3);
 
         // 2. Fairy: Pink square (stationary)
-        fairy = new Fairy(150, 380, "Stage 1 Fairy", 20);
+        fairy = EntityFactory.createFairy(150, 380, "Stage 1 Fairy", 20);
 
         // 3. Boss: Blue square (stationary, larger size)
-        boss = new Boss(380, 400, "Cirno", 150);
+        boss = EntityFactory.createBoss(380, 400, "Cirno", 150);
 
         // 4. Items: White squares (moving downwards linearly)
-        powerItem = new Item(200, 450, 16, 16, 80f, ItemType.POWER, 500L);
-        pointItem = new Item(320, 480, 12, 12, 120f, ItemType.POINT, 1000L);
+        powerItem = EntityFactory.createItem(200, 450, ItemType.POWER);
+        pointItem = EntityFactory.createItem(320, 480, ItemType.POINT);
 
         entities.add(player);
         entities.add(fairy);
@@ -63,7 +65,6 @@ public class Main extends ApplicationAdapter {
             }
         }
     }
-
 
     @Override
     public void render() {
@@ -97,21 +98,22 @@ public class Main extends ApplicationAdapter {
 
         ScreenUtils.clear(0.1f, 0.1f, 0.15f, 1f);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        batch.begin();
         for (GameObject entity : entities) {
             // TODO 3: Use an if statement to check whether the entity has not been destroyed (!entity.isDestroyed()).
-            // If so, call entity.render(shapeRenderer);
+            // If so, call entity.render(batch);
             if (!entity.isDestroyed()) {
-                entity.render(shapeRenderer);
+                entity.render(batch);
             }
         }
-        shapeRenderer.end();
+        batch.end();
     }
 
     @Override
     public void dispose() {
-        if (shapeRenderer != null) {
-            shapeRenderer.dispose();
+        if (batch != null) {
+            batch.dispose();
         }
+        AssetManager.getInstance().dispose();
     }
 }

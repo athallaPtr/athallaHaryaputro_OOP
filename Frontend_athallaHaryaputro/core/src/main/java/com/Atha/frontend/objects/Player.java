@@ -9,6 +9,7 @@ import com.Atha.frontend.objects.bullets.Bullet;
 import com.Atha.frontend.objects.enemies.Boss;
 import com.Atha.frontend.objects.enemies.Enemy;
 import com.Atha.frontend.objects.enemies.Fairy;
+import com.Atha.frontend.systems.AssetManager;
 
 public class Player extends GameObject {
     private String name;
@@ -37,6 +38,7 @@ public class Player extends GameObject {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         // Player movement handling (LibGDX input)
         if (Gdx.input != null) {
             if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
