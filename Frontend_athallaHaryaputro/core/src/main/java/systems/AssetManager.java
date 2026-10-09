@@ -1,3 +1,4 @@
+
 package com.Atha.frontend.systems;
 
 import com.badlogic.gdx.Gdx;
@@ -88,8 +89,8 @@ public class AssetManager {
             // TODO:
             // 1. Create a TextureRegion[] array with numFrames elements
             // 2. Fill the array with grid[row][startCol + i]
-            // 3. Create Animation<TextureRegion> anim = new Animation<>(frameDuration, frames);
-            // 4. Set the animation's play mode: anim.setPlayMode(playMode);
+            // 3. Create Animation<TextureRegion> anim = new Animation<>(frameDuration, frames)
+            // 4. Set the animation's play mode: anim.setPlayMode(playMode)
             // 5. Store anim in animationMap under key
             // 6. Store the first frame (frames[0]) in textureRegionMap under the same key (as the default sprite)
             TextureRegion[] frames = new TextureRegion[numFrames];
@@ -148,22 +149,29 @@ public class AssetManager {
 
     public void init() {
         // TODO: Register Reimu Hakurei's idle animation (player.png: 32x48 per cell)
-        registerAnimationFromSheet("player_idle", "player.png", 32, 48, 0, 4, 0.15f);
+        registerAnimationFromSheet("player_idle", "player.png", 32, 48, 0, 0, 8, 0.125f, Animation.PlayMode.LOOP);
+        registerAnimationFromSheet("player_left", "player.png", 32, 48, 1, 0, 4, 0.12f, Animation.PlayMode.LOOP);
+        registerAnimationFromSheet("player_right", "player.png", 32, 48, 2, 0, 4, 0.12f, Animation.PlayMode.LOOP);
 
         // TODO: Register the Boss's idle animation (rumia.png: 64x64 per cell)
-        registerAnimationFromSheet("boss_idle", "rumia.png", 64, 64, 0, 4, 0.15f);
+        registerAnimationFromSheet("boss_idle", "rumia.png", 64, 64, 0, 0, 4, 0.2f, Animation.PlayMode.LOOP);
+        registerAnimationFromSheet("boss_left", "rumia.png", 64, 64, 1, 0, 4, 0.15f, Animation.PlayMode.REVERSED);
+        registerAnimationFromSheet("boss_right", "rumia.png", 64, 64, 2, 0, 4, 0.15f, Animation.PlayMode.NORMAL);
 
         // TODO: Register the Fairy animations
-        registerAnimationFromSheet("fairy_idle", "fairy.png", 32, 32, 0, 4, 0.15f);
+        registerAnimationFromSheet("fairy_idle_red", "fairy.png", 32, 32, 1, 0, 8, 0.125f, Animation.PlayMode.LOOP);
+        registerAnimationFromSheet("fairy_idle_blue", "fairy.png", 32, 32, 0, 0, 8, 0.125f, Animation.PlayMode.LOOP);
 
         // TODO: Register the enemy bullet (bullets_small.png: 16x16 cell at row 2, column 3)
         registerRegionFromSheet("bullet_danmaku", "bullets_small.png", 16, 16, 2, 3);
+        registerRegionFromSheet("bullet_amulet", "amulet_reimu.png", 16, 16, 0, 0);
+        registerRegionFromSheet("bullet_amulet_homing", "amulet_reimu.png", 16, 16, 1, 0);
 
         // TODO: Register the 4 Item variants (items.png: 16x16 per cell)
         registerRegionFromSheet("item_power", "items.png", 16, 16, 0, 0);
         registerRegionFromSheet("item_point", "items.png", 16, 16, 0, 1);
-        registerRegionFromSheet("item_bomb",  "items.png", 16, 16, 0, 2);
-        registerRegionFromSheet("item_life",  "items.png", 16, 16, 0, 3);
+        registerRegionFromSheet("item_bomb", "items.png", 16, 16, 0, 3);
+        registerRegionFromSheet("item_life", "items.png", 16, 16, 0, 5);
     }
 
     public void dispose() {

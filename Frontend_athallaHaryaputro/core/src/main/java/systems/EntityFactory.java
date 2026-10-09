@@ -1,3 +1,4 @@
+
 package com.Atha.frontend.systems;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -22,7 +23,7 @@ public class EntityFactory {
 
     public static Fairy createFairy(float x, float y, String name, int hp) {
         Fairy fairy = new Fairy(x, y, name, hp);
-        Animation<TextureRegion> anim = AssetManager.getInstance().getAnimation("fairy_idle");
+        Animation<TextureRegion> anim = AssetManager.getInstance().getAnimation("fairy_idle_red");
         fairy.setAnimation(anim);
         return fairy;
     }
@@ -31,7 +32,7 @@ public class EntityFactory {
         Fairy fairy = new Fairy(x, y, name, hp);
         Animation<TextureRegion> idleAnim = AssetManager.getInstance().getAnimation(keyString);
         fairy.setAnimation(idleAnim);
-        return fairy
+        return fairy;
     }
 
 
@@ -54,6 +55,17 @@ public class EntityFactory {
         TextureRegion sprite = AssetManager.getInstance().getTextureRegion(key);
         item.setSprite(sprite);
         return item;
+    }
+
+    public static Bullet createPlayerBullet(float x, float y, int damage, String spriteKey) {
+        TextureRegion sprite = AssetManager.getInstance().getTextureRegion(spriteKey);
+        Bullet bullet = new Bullet(x, y, BulletType.AMULET, damage);
+        bullet.setSprite(sprite);
+        return bullet;
+    }
+
+    public static Bullet createPlayerBullet(float x, float y, int damage) {
+        return createPlayerBullet(x, y, damage, "bullet_amulet");
     }
 
     // Create an enemy bullet (type DANMAKU, speed 0f, sprite bullet_danmaku)

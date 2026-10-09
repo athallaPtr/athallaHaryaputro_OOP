@@ -1,3 +1,4 @@
+
 package com.Atha.frontend;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -16,13 +17,12 @@ import com.badlogic.gdx.Input;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
-import com.Atha.frontend.systems.AssetManager;
 
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
 
     private Player player;
-    private Fairy fairy;
+    private List<Fairy> fairy;
     private Boss boss;
     private Item powerItem;
     private Item pointItem;
@@ -33,23 +33,24 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         AssetManager.getInstance().init();
         entities = new ArrayList<>();
-        fairy = new ArrayList<>()
+        fairy = new ArrayList<>();
 
         // 1. Player: Red square (movable with W/A/S/D or Arrows)
         player = EntityFactory.createPlayer(280, 40, "Reimu Hakurei", 100, 15, 3);
 
         // 2. Fairy: Pink square (stationary)
-        fairy = EntityFactory.createFairy(150, 380, "Stage 1 Fairy", 20);
+        fairy.add(EntityFactory.createFairy(150, 380, "Red Fairy", 20));
+        fairy.add(EntityFactory.createFairy(250, 380, "Blue Fairy", 20, "fairy_idle_blue"));
 
         // 3. Boss: Blue square (stationary, larger size)
-        boss = EntityFactory.createBoss(380, 400, "Cirno", 150);
+        boss = EntityFactory.createBoss(380, 400, "Rumia", 150);
 
         // 4. Items: White squares (moving downwards linearly)
         powerItem = EntityFactory.createItem(200, 450, ItemType.POWER);
         pointItem = EntityFactory.createItem(320, 480, ItemType.POINT);
 
         entities.add(player);
-        entities.add(fairy);
+        entities.addAll(fairy);
         entities.add(boss);
         entities.add(powerItem);
         entities.add(pointItem);
