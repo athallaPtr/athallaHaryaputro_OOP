@@ -1,3 +1,9 @@
+package com.Atha.frontend.objects.patterns.shootingStrategy;
+import com.Atha.frontend.objects.GameObject;
+import com.Atha.frontend.objects.bullets.Bullet;
+import com.Atha.frontend.systems.BulletManager;
+import com.Atha.frontend.objects.patterns.ShootingPattern;
+
 public class SpreadShot implements ShootingPattern {
     private float speed;
     private int numBullets;

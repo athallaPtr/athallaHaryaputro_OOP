@@ -13,6 +13,8 @@ import com.Atha.frontend.objects.items.Item;
 import com.Atha.frontend.objects.items.ItemType;
 import com.Atha.frontend.systems.AssetManager;
 import com.Atha.frontend.systems.EntityFactory;
+import com.Atha.frontend.systems.BulletManager;
+import com.Atha.frontend.systems.CollisionReferee;
 import com.badlogic.gdx.Input;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -28,6 +30,10 @@ public class Main extends ApplicationAdapter {
     private Item pointItem;
     private List<GameObject> entities;
 
+    private BulletManager bulletManager;
+    private CollisionReferee collisionReferee;
+    private float enemyShootTimer = 0f;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -35,17 +41,13 @@ public class Main extends ApplicationAdapter {
         entities = new ArrayList<>();
         fairy = new ArrayList<>();
 
-        // 1. Player: Red square (movable with W/A/S/D or Arrows)
         player = EntityFactory.createPlayer(280, 40, "Reimu Hakurei", 100, 15, 3);
 
-        // 2. Fairy: Pink square (stationary)
         fairy.add(EntityFactory.createFairy(150, 380, "Red Fairy", 20));
         fairy.add(EntityFactory.createFairy(250, 380, "Blue Fairy", 20, "fairy_idle_blue"));
 
-        // 3. Boss: Blue square (stationary, larger size)
         boss = EntityFactory.createBoss(380, 400, "Rumia", 150);
 
-        // 4. Items: White squares (moving downwards linearly)
         powerItem = EntityFactory.createItem(200, 450, ItemType.POWER);
         pointItem = EntityFactory.createItem(320, 480, ItemType.POINT);
 
@@ -54,6 +56,9 @@ public class Main extends ApplicationAdapter {
         entities.add(boss);
         entities.add(powerItem);
         entities.add(pointItem);
+
+        bulletManager = new BulletManager();
+        collisionReferee = new CollisionReferee();
     }
 
     public <T extends GameObject> void updateAndClean(List<T> list, float delta, float screenWidth, float screenHeight) {
@@ -67,46 +72,42 @@ public class Main extends ApplicationAdapter {
         }
     }
 
+    private void updateEnemyScheduler(float delta) {
+        enemyShootTimer += delta;
+
+        if (enemyShootTimer >= 1.5f) {
+            boss.shootBullet(bulletManager);
+            enemyShootTimer = 0f;
+        }
+    }
+
     @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
 
-        // TODO 1: If the Z key was just pressed, add a new bullet from player.shootBullet()
-        // to the entities list.
-        // Clue: Gdx.input.isKeyJustPressed()
         if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
-            entities.add(player.shootBullet());
+            player.shootBullet(bulletManager);
         }
 
-        // TODO 2: Call updateAndClean(entities, delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())
-        // to update and clean up destroyed/off-screen entities.
+        updateEnemyScheduler(delta);
+
         updateAndClean(entities, delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // 3. Collision detection between entities (skip entities that are already destroyed)
-        for (int i = 0; i < entities.size(); i++) {
-            for (int j = i + 1; j < entities.size(); j++) {
-                GameObject a = entities.get(i);
-                GameObject b = entities.get(j);
+        bulletManager.update(delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-                if (!a.isDestroyed() && !b.isDestroyed()) {
-                    if (a.getCoreHitbox().overlaps(b.getCoreHitbox())) {
-                        a.onCollision(b);
-                        b.onCollision(a);
-                    }
-                }
-            }
-        }
+        collisionReferee.resolveCollisions(player, entities, bulletManager);
 
         ScreenUtils.clear(0.1f, 0.1f, 0.15f, 1f);
 
         batch.begin();
         for (GameObject entity : entities) {
-            // TODO 3: Use an if statement to check whether the entity has not been destroyed (!entity.isDestroyed()).
-            // If so, call entity.render(batch);
             if (!entity.isDestroyed()) {
                 entity.render(batch);
             }
         }
+
+        bulletManager.render(batch);
+
         batch.end();
     }
 
