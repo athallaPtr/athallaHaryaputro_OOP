@@ -1,14 +1,16 @@
 package com.Atha.frontend.systems;
 
-import java.util.Queue;
-import java.util.List;
-import java.util.LinkedList;
+import com.Atha.frontend.objects.BulletType;
+import com.Atha.frontend.objects.GameObject;
+import com.Atha.frontend.objects.bullets.Bullet;
+import com.Atha.frontend.objects.items.ItemType;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.Atha.frontend.objects.BulletType;
-import com.Atha.frontend.objects.bullets.Bullet;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class BulletManager {
     private Queue<Bullet> playerBulletPool;
@@ -20,7 +22,6 @@ public class BulletManager {
     public BulletManager() {
         playerBulletPool = new LinkedList<>();
         enemyBulletPool = new LinkedList<>();
-
         activePlayerBullets = new ArrayList<>();
         activeEnemyBullets = new ArrayList<>();
     }
@@ -36,7 +37,6 @@ public class BulletManager {
 
         bullet.init(x, y, vx, vy, BulletType.AMULET, damage, true);
         activePlayerBullets.add(bullet);
-
         return bullet;
     }
 
@@ -51,7 +51,6 @@ public class BulletManager {
 
         bullet.init(x, y, vx, vy, BulletType.DANMAKU, damage, false);
         activeEnemyBullets.add(bullet);
-
         return bullet;
     }
 
@@ -60,7 +59,6 @@ public class BulletManager {
 
         while (playerIterator.hasNext()) {
             Bullet bullet = playerIterator.next();
-
             bullet.update(delta);
 
             if (bullet.isDestroyed() || bullet.isOffScreen(screenWidth, screenHeight)) {
@@ -74,7 +72,6 @@ public class BulletManager {
 
         while (enemyIterator.hasNext()) {
             Bullet bullet = enemyIterator.next();
-
             bullet.update(delta);
 
             if (bullet.isDestroyed() || bullet.isOffScreen(screenWidth, screenHeight)) {
@@ -85,13 +82,48 @@ public class BulletManager {
         }
     }
 
+    public void clearEnemyBullets(List<GameObject> entities) {
+        Iterator<Bullet> iterator = activeEnemyBullets.iterator();
+
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
+
+            if (entities != null) {
+                entities.add(EntityFactory.createItem(bullet.getX(), bullet.getY(), ItemType.POINT));
+            }
+
+            bullet.destroy();
+            iterator.remove();
+            enemyBulletPool.offer(bullet);
+        }
+    }
+
+    public void clearEnemyBullets() {
+        clearEnemyBullets(null);
+    }
+
+    public void clearPlayerBullets() {
+        Iterator<Bullet> iterator = activePlayerBullets.iterator();
+
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
+            bullet.destroy();
+            iterator.remove();
+            playerBulletPool.offer(bullet);
+        }
+    }
+
     public void render(SpriteBatch batch) {
-        for (Bullet b : activePlayerBullets) {
-            if (!b.isDestroyed()) b.render(batch);
+        for (Bullet bullet : activePlayerBullets) {
+            if (!bullet.isDestroyed()) {
+                bullet.render(batch);
+            }
         }
 
-        for (Bullet b : activeEnemyBullets) {
-            if (!b.isDestroyed()) b.render(batch);
+        for (Bullet bullet : activeEnemyBullets) {
+            if (!bullet.isDestroyed()) {
+                bullet.render(batch);
+            }
         }
     }
 
