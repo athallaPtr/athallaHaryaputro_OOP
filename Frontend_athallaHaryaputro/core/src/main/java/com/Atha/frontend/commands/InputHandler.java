@@ -1,13 +1,14 @@
 package com.Atha.frontend.commands;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.Atha.frontend.objects.GameObject;
-import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InputHandler {
+
     private int keyShoot = Input.Keys.Z;
     private int keyBomb = Input.Keys.X;
     private int keyFocus = Input.Keys.SHIFT_LEFT;
@@ -31,71 +32,63 @@ public class InputHandler {
         bombCommand.setEntities(entities);
     }
 
-    public int getKeyShoot() {
-        return keyShoot;
-    }
-
-    public void setKeyShoot(int keyShoot) {
-        this.keyShoot = keyShoot;
-    }
-
-    public int getKeyBomb() {
-        return keyBomb;
-    }
-
-    public void setKeyBomb(int keyBomb) {
-        this.keyBomb = keyBomb;
-    }
-
-    public int getKeyFocus() {
-        return keyFocus;
-    }
-
-    public void setKeyFocus(int keyFocus) {
-        this.keyFocus = keyFocus;
-    }
-
     public List<Command> handleInput(float delta) {
         activeCommands.clear();
 
-        if (Gdx.input == null){
+        if (Gdx.input == null) {
             return activeCommands;
         }
 
-        boolean isFocusHeld = Gdx.input.isKeyPressed(keyFocus) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+        // 1. Focus Mode
+        boolean isFocusHeld =
+            Gdx.input.isKeyPressed(keyFocus) ||
+                Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
 
         activeCommands.add(isFocusHeld ? focusOn : focusOff);
 
-        float dx = 0:
+        // 2. 8 Directional Movement
+        float dx = 0;
         float dy = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) ||
+            Gdx.input.isKeyPressed(Input.Keys.UP)) {
             dy += 1;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) ||
+            Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             dy -= 1;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) ||
+            Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             dx -= 1;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) ||
+            Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             dx += 1;
         }
 
         float speedMult = isFocusHeld ? 0.45f : 1.0f;
-        moveCommand.set(dx * delta * speedMult, dy * delta * speedMult);
+
+        moveCommand.set(
+            dx * delta * speedMult,
+            dy * delta * speedMult
+        );
+
         activeCommands.add(moveCommand);
 
+        // 3. Continuous Shooting
         if (Gdx.input.isKeyPressed(keyShoot)) {
             activeCommands.add(shootCommand);
         }
 
-        if (Gdx.input.isKeyPressed(keyBomb)) {
+        // 4. Single Bomb Activation
+        if (Gdx.input.isKeyJustPressed(keyBomb)) {
             activeCommands.add(bombCommand);
         }
+
         return activeCommands;
     }
 }
