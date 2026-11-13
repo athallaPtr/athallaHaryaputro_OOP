@@ -9,6 +9,8 @@ import com.Atha.frontend.objects.bullets.Bullet;
 import com.Atha.frontend.objects.enemies.Enemy;
 import com.Atha.frontend.objects.items.Item;
 import com.Atha.frontend.objects.items.ItemType;
+import com.Atha.frontend.systems.BulletManager;
+import com.Atha.frontend.systems.EntityFactory;
 
 public class CollisionReferee {
 

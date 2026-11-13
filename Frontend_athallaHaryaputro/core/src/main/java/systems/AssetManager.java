@@ -157,6 +157,8 @@ public class AssetManager {
         registerAnimationFromSheet("boss_idle", "rumia.png", 64, 64, 0, 0, 4, 0.2f, Animation.PlayMode.LOOP);
         registerAnimationFromSheet("boss_left", "rumia.png", 64, 64, 1, 0, 4, 0.15f, Animation.PlayMode.REVERSED);
         registerAnimationFromSheet("boss_right", "rumia.png", 64, 64, 2, 0, 4, 0.15f, Animation.PlayMode.NORMAL);
+        registerAnimationFromSheet("boss_left_loop", "rumia.png", 64, 64, 1, 0, 4, 0.15f, Animation.PlayMode.LOOP);
+        registerAnimationFromSheet("boss_right_loop", "rumia.png", 64, 64, 2, 0, 4, 0.15f, Animation.PlayMode.LOOP);
 
         // TODO: Register the Fairy animations
         registerAnimationFromSheet("fairy_idle_red", "fairy.png", 32, 32, 1, 0, 8, 0.125f, Animation.PlayMode.LOOP);
@@ -164,6 +166,11 @@ public class AssetManager {
 
         // TODO: Register the enemy bullet (bullets_small.png: 16x16 cell at row 2, column 3)
         registerRegionFromSheet("bullet_danmaku", "bullets_small.png", 16, 16, 2, 3);
+        registerRegionFromSheet("bullet_danmaku_blue", "bullets_small.png", 16, 16, 2, 3);
+        registerRegionFromSheet("bullet_danmaku_red", "bullets_small.png", 16, 16, 2, 6);
+        registerRegionFromSheet("bullet_danmaku_purple", "bullets_small.png", 16, 16, 2, 4);
+        registerRegionFromSheet("bullet_danmaku_orange", "bullets_small.png", 16, 16, 2, 15);
+        registerRegionFromSheet("bullet_danmaku_green", "bullets_small.png", 16, 16, 2, 10);
         registerRegionFromSheet("bullet_amulet", "amulet_reimu.png", 16, 16, 0, 0);
         registerRegionFromSheet("bullet_amulet_homing", "amulet_reimu.png", 16, 16, 1, 0);
 

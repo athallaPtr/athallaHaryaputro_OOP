@@ -4,6 +4,7 @@ package com.Atha.frontend.objects.bullets;
 import com.Atha.frontend.objects.BulletType;
 import com.Atha.frontend.objects.Collidable;
 import com.Atha.frontend.objects.GameObject;
+import com.Atha.frontend.objects.patterns.bulletStrategy.BulletMovementPattern;
 import com.Atha.frontend.objects.enemies.Enemy;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +19,7 @@ public class Bullet extends GameObject {
     private float angle = 90f;
     private boolean isPlayerBullet;
     private boolean grazed;
+    private BulletMovementPattern movementPattern;
 
 
 
@@ -64,6 +66,7 @@ public class Bullet extends GameObject {
         this.active = true;
         this.stateTime = 0f;
         this.grazed = false;
+        this.movementPattern = null;
     }
 
 
@@ -71,8 +74,12 @@ public class Bullet extends GameObject {
     @Override
     public void update(float delta) {
         super.update(delta);
-        this.x += vx * delta;
-        this.y += vy * delta;
+        if (movementPattern != null) {
+            movementPattern.move(this, delta);
+        } else {
+            this.x += vx * delta;
+            this.y += vy * delta;
+        }
     }
 
     @Override
@@ -92,6 +99,9 @@ public class Bullet extends GameObject {
             }
         }
     }
+
+    public BulletMovementPattern getMovementPattern() { return movementPattern; }
+    public void setMovementPattern(BulletMovementPattern movementPattern) { this.movementPattern = movementPattern; }
 
     public BulletType getBulletType() { return bulletType; }
     public int getDamage() { return damage; }
